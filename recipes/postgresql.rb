@@ -45,3 +45,5 @@ postgresql_database node["dvwa"]["db"]["name"] do
   owner node["dvwa"]["db"]["username"]
   action :create
 end
+
+include_recipe "dvwa::setup_db"

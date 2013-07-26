@@ -86,8 +86,3 @@ if node["dvwa"]["db"]["use_psql"]
 else
   include_recipe "dvwa::mysql"
 end
-
-dvwa_http_post "127.0.0.1" do
-  data "create_db=Create+%2F+Reset+Database"
-  uri "/setup.php"
-end

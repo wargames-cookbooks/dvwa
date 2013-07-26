@@ -41,3 +41,5 @@ mysql_database node["dvwa"]["db"]["name"] do
   connection mysql_connection_info
   action :create
 end
+
+include_recipe "dvwa::setup_db"
