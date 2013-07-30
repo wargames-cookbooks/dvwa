@@ -23,5 +23,6 @@ version          '0.1.0'
 
 depends "apache2"
 depends "mysql"
+depends "postgresql"
 depends "php"
 depends "database"
