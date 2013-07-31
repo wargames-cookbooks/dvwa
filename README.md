@@ -1,6 +1,6 @@
 DVWA Cookbook
 =============
-Deploy a Damn Vulnerable Web Application environment.
+Deploy a Damn Vulnerable Web Application environment. [![Build Status](https://secure.travis-ci.org/wargames-cookbooks/dvwa.png)](http://travis-ci.org/wargames-cookbooks/dvwa)
 
 Requirements
 ------------
@@ -53,8 +53,8 @@ Just include `dvwa` in your node's `run_list`:
 - First, install dependencies:  
 `bundle install`  
 
-- Run kitchen tests:  
-`bundle exec kitchen test`  
+- Run strainer tests:  
+`bundle exec strainer test`  
 
 Contributing
 ------------
