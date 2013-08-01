@@ -17,10 +17,10 @@
 # Recipe:: default
 #
 
-require File.expand_path('../support/helpers', __FILE__)
-
 describe "dvwa_test::default" do
-  include Helpers::DvwaTest
+  include MiniTest::Chef::Assertions
+  include MiniTest::Chef::Context
+  include MiniTest::Chef::Resources
 
   it 'dvwa vhost' do
     file(node["apache"]["dir"] + "/sites-available/dvwa.conf").must_exist
