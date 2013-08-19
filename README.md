@@ -53,6 +53,9 @@ Just include `dvwa` in your node's `run_list`:
 - First, install dependencies:  
 `bundle install`  
 
+- Install cookbook dependencies  
+`berks install`  
+
 - Run strainer tests:  
 `bundle exec strainer test`  
 
