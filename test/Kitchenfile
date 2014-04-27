@@ -1,4 +1,0 @@
-# -*- ruby -*-
-cookbook "dvwa" do
-  configuration "default"
-end

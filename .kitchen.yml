@@ -21,8 +21,6 @@ suites:
 - name: "default"
   run_list:
   - recipe[dvwa]
-  - recipe[minitest-handler]
-  - recipe[dvwa_test]
   attributes: {
     mysql: {
       server_root_password: root,
