@@ -20,7 +20,7 @@ platforms:
 suites:
 - name: "default"
   run_list:
-  - recipe[dvwa]
+    - recipe[dvwa]
   attributes: {
     mysql: {
       server_root_password: root,
@@ -39,7 +39,8 @@ suites:
     }
   }
 - name: "dvwa-mysql"
-  run_list: ["recipe[dvwa]"]
+  run_list:
+    - recipe[dvwa]
   attributes: {
     mysql: {
       server_root_password: root,
@@ -58,7 +59,8 @@ suites:
     }
   }
 - name: "dvwa-postgresql"
-  run_list: ["recipe[dvwa]"]
+  run_list:
+    - recipe[dvwa]
   attributes: {
     mysql: {
       server_root_password: root,
