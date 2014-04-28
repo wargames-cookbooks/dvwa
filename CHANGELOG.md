@@ -14,3 +14,6 @@ This file is used to list changes made in each version of dvwa.
 * Added travis continuous integration
 * Tests refactoring
 
+## 0.1.2:
+
+* Integration testing with serverspec and test-kitchen
