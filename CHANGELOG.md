@@ -17,3 +17,7 @@ This file is used to list changes made in each version of dvwa.
 ## 0.1.2:
 
 * Integration testing with serverspec and test-kitchen
+
+## 0.1.3:
+
+* Changed license for Apache 2.0
