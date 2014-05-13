@@ -1,6 +1,7 @@
 DVWA Cookbook
 =============
-Deploy a Damn Vulnerable Web Application environment. [![Build Status](https://secure.travis-ci.org/wargames-cookbooks/dvwa.png)](http://travis-ci.org/wargames-cookbooks/dvwa)
+Deploy a Damn Vulnerable Web Application environment.
+[![Cookbook Version](https://img.shields.io/cookbook/v/dvwa.svg)](https://community.opscode.com/cookbooks/dvwa) [![Build Status](https://secure.travis-ci.org/wargames-cookbooks/dvwa.png)](http://travis-ci.org/wargames-cookbooks/dvwa)
 
 Requirements
 ------------
