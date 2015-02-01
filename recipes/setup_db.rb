@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 #
 # Cookbook Name:: dvwa
 # Recipe:: setup_db
@@ -16,46 +16,46 @@
 # limitations under the License.
 #
 
-if node["dvwa"]["db"]["use_psql"]
-  filename = "dvwa-pg.sql"
+if node['dvwa']['db']['use_psql']
+  filename = 'dvwa-pg.sql'
   provider = Chef::Provider::Database::Postgresql
   connection_info = {
-    :host => "localhost",
-    :port => node["dvwa"]["db"]["port"],
-    :username => "postgres",
-    :password => node["postgresql"]["password"]["postgres"]
+    host: 'localhost',
+    port: node['dvwa']['db']['port'],
+    username: 'postgres',
+    password: node['postgresql']['password']['postgres']
   }
 else
-  filename = "dvwa-my.sql"
+  filename = 'dvwa-my.sql'
   provider = Chef::Provider::Database::Mysql
   connection_info = {
-    :host => "localhost",
-    :username => "root",
-    :password => node["mysql"]["server_root_password"]
+    host: 'localhost',
+    username: 'root',
+    password: node['mysql']['server_root_password']
   }
 end
 
-directory node["dvwa"]["path"] + "/sql" do
-  owner "root"
-  group "root"
-  mode  "0700"
+directory "#{node['dvwa']['path']}/sql" do
+  owner 'root'
+  group 'root'
+  mode '0700'
   action :create
 end
 
-cookbook_file node["dvwa"]["path"] + "/sql/" + filename do
+cookbook_file "#{node['dvwa']['path']}/sql/#{filename}" do
   source filename
-  cookbook "dvwa"
+  cookbook 'dvwa'
 end
 
-database "Setup database (#{@provider})" do
+database 'Setup database (#{@provider})' do
   connection connection_info
-  database_name node["dvwa"]["db"]["name"]
+  database_name node['dvwa']['db']['name']
   provider provider
-  sql { ::File.open(node["dvwa"]["path"] + "/sql/" + filename).read }
+  sql { ::File.open("#{node['dvwa']['path']}/sql/#{filename}").read }
   action :query
 end
 
-directory node["dvwa"]["path"] + "/sql" do
+directory "#{node['dvwa']['path']}/sql" do
   action :delete
   recursive true
 end

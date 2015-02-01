@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,24 @@
 # limitations under the License.
 #
 
-name             'dvwa'
-maintainer       'Sliim'
+name 'dvwa'
+maintainer 'Sliim'
 maintainer_email 'sliim@mailoo.org'
-license          'Apache 2.0'
-description      'Installs/Configures Damn Vulnerable Web Application'
+license 'Apache 2.0'
+description 'Installs/Configures Damn Vulnerable Web Application'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.3'
+version '0.1.3'
 
-depends "apache2"
-depends "mysql"
-depends "postgresql"
-depends "php"
-depends "database"
+recipe 'default', 'Installs/configures dvwa webapp'
+recipe 'mysql', 'MySQL database configuration'
+recipe 'postgresql', 'PostgreSQL database configuration'
+recipe 'setub_db', 'Common database settings'
+
+depends 'apache2'
+depends 'mysql'
+depends 'postgresql'
+depends 'php'
+depends 'database'
+
+supports 'ubuntu'
+supports 'centos'

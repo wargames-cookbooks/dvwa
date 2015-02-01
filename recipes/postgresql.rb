@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 #
 # Cookbook Name:: dvwa
 # Recipe:: postgresql
@@ -16,33 +16,33 @@
 # limitations under the License.
 #
 
-include_recipe "postgresql::server"
-include_recipe "postgresql::client"
-include_recipe "database"
-include_recipe "postgresql::ruby"
-include_recipe "php::module_pgsql"
+include_recipe 'postgresql::server'
+include_recipe 'postgresql::client'
+include_recipe 'database'
+include_recipe 'postgresql::ruby'
+include_recipe 'php::module_pgsql'
 
 psql_connection_info = {
-  :host => "localhost",
-  :port => node["dvwa"]["db"]["port"],
-  :username => "postgres",
-  :password => node["postgresql"]["password"]["postgres"]
+  host: 'localhost',
+  port: node['dvwa']['db']['port'],
+  username: 'postgres',
+  password: node['postgresql']['password']['postgres']
 }
 
-postgresql_database_user node["dvwa"]["db"]["username"] do
+postgresql_database_user node['dvwa']['db']['username'] do
   connection psql_connection_info
-  password node["dvwa"]["db"]["password"]
+  password node['dvwa']['db']['password']
   action :create
 end
 
-postgresql_database node["dvwa"]["db"]["name"] do
+postgresql_database node['dvwa']['db']['name'] do
   connection psql_connection_info
   template 'DEFAULT'
   encoding 'DEFAULT'
   tablespace 'DEFAULT'
   connection_limit '-1'
-  owner node["dvwa"]["db"]["username"]
+  owner node['dvwa']['db']['username']
   action :create
 end
 
-include_recipe "dvwa::setup_db"
+include_recipe 'dvwa::setup_db'

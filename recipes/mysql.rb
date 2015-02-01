@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 #
 # Cookbook Name:: dvwa
 # Recipe:: mysql
@@ -16,29 +16,29 @@
 # limitations under the License.
 #
 
-include_recipe "mysql::server"
-include_recipe "mysql::client"
-include_recipe "database"
-include_recipe "mysql::ruby"
-include_recipe "php::module_mysql"
+include_recipe 'mysql::server'
+include_recipe 'mysql::client'
+include_recipe 'database'
+include_recipe 'mysql::ruby'
+include_recipe 'php::module_mysql'
 
 mysql_connection_info = {
-  :host => "localhost",
-  :username => "root",
-  :password => node["mysql"]["server_root_password"]
+  host: 'localhost',
+  username: 'root',
+  password: node['mysql']['server_root_password']
 }
 
-mysql_database_user node["dvwa"]["db"]["username"] do
+mysql_database_user node['dvwa']['db']['username'] do
   connection mysql_connection_info
-  password node["dvwa"]["db"]["password"]
-  database_name node["dvwa"]["db"]["name"]
-  privileges [:select,:update,:insert,:create,:delete,:drop]
+  password node['dvwa']['db']['password']
+  database_name node['dvwa']['db']['name']
+  privileges [:select, :update, :insert, :create, :delete, :drop]
   action :grant
 end
 
-mysql_database node["dvwa"]["db"]["name"] do
+mysql_database node['dvwa']['db']['name'] do
   connection mysql_connection_info
   action :create
 end
 
-include_recipe "dvwa::setup_db"
+include_recipe 'dvwa::setup_db'
