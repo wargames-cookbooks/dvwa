@@ -21,8 +21,9 @@ Attributes
 ----------
 
 #### dvwa::default
-* `['dvwa']['db']['use_psql']` - Use Postgresql instead MySQL
-* `['dvwa']['db']['port']` - >Database port, only needed for postgresql dbms
+* `['dvwa']['db']['use_pgsql']` - Use Postgresql instead MySQL
+* `['dvwa']['db']['server']` - Database server host
+* `['dvwa']['db']['port']` - Database port, only needed for postgresql dbms
 * `['dvwa']['db']['name']` - Database name
 * `['dvwa']['db']['username']` - Database user name
 * `['dvwa']['db']['password']` - Database user password

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 #
+# Cookbook Name:: dvwa
+# Resource:: db
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,21 +16,17 @@
 # limitations under the License.
 #
 
-name 'dvwa'
-maintainer 'Sliim'
-maintainer_email 'sliim@mailoo.org'
-license 'Apache 2.0'
-description 'Installs/Configures Damn Vulnerable Web Application'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.1.3'
+actions :create
+attribute :name, kind_of: String
+attribute :pgsql, kind_of: [TrueClass, FalseClass], default: false
+attribute :server, kind_of: String
+attribute :port, kind_of: Integer
+attribute :username, kind_of: String
+attribute :password, kind_of: String
+attribute :dvwa_path, kind_of: String
 
-recipe 'default', 'Installs/configures dvwa webapp'
-
-depends 'apache2'
-depends 'mysql'
-depends 'postgresql'
-depends 'php'
-depends 'database'
-
-supports 'ubuntu'
-supports 'centos'
+def initialize(*args)
+  super
+  @action = :create
+  @resource_name = :dvwa_db
+end

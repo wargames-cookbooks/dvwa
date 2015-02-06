@@ -16,24 +16,21 @@
 # limitations under the License.
 #
 
-# Database configuration
-default['dvwa']['db']['use_psql'] = false
-default['dvwa']['db']['port'] = 5432 # Only needed for psql dbms
-default['dvwa']['db']['name'] = 'dvwa'
-default['dvwa']['db']['username'] = 'dvwa'
-default['dvwa']['db']['password'] = 'dvwa'
+default['dvwa']['version'] = 'v1.0.8'
+default['dvwa']['path'] = '/opt/dvwa'
+default['dvwa']['security_level'] = 'high'
 
-# Recaptcha settings
 # rubocop:disable Metrics/LineLength
 default['dvwa']['recaptcha']['public_key'] = '6LfzKeUSAAAAABbGMjVS77HmkY7emIB9v5VGeEvb'
 default['dvwa']['recaptcha']['private_key'] = '6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF'
 # rubocop:enable Metrics/LineLength
 
-# Apache2 configuration
 default['dvwa']['apache2']['server_name'] = 'dvwa'
 default['dvwa']['apache2']['server_aliases'] = ['dvwa']
 
-# DVWA application
-default['dvwa']['version'] = 'v1.0.8'
-default['dvwa']['path'] = '/opt/dvwa'
-default['dvwa']['security_level'] = 'high'
+default['dvwa']['db']['use_pgsql'] = false
+default['dvwa']['db']['server'] = 'localhost'
+default['dvwa']['db']['port'] = 5432 # Only needed for pgsql dbms
+default['dvwa']['db']['name'] = 'dvwa'
+default['dvwa']['db']['username'] = 'dvwa'
+default['dvwa']['db']['password'] = 'dvwa'

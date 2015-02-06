@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 #
+# Cookbook Name:: dvwa
+# Library:: matchers
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,21 +16,8 @@
 # limitations under the License.
 #
 
-name 'dvwa'
-maintainer 'Sliim'
-maintainer_email 'sliim@mailoo.org'
-license 'Apache 2.0'
-description 'Installs/Configures Damn Vulnerable Web Application'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.1.3'
-
-recipe 'default', 'Installs/configures dvwa webapp'
-
-depends 'apache2'
-depends 'mysql'
-depends 'postgresql'
-depends 'php'
-depends 'database'
-
-supports 'ubuntu'
-supports 'centos'
+if defined?(ChefSpec)
+  def create_dvwa_db(name)
+    ChefSpec::Matchers::ResourceMatcher.new(:dvwa_db, :create, name)
+  end
+end
