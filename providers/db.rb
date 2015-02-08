@@ -19,7 +19,8 @@
 include Chef::DSL::IncludeRecipe
 
 action :create do
-  connection_info = { host: new_resource.server }
+  connection_info = { host: new_resource.server,
+                      socket: '/run/mysql-default/mysqld.sock' }
 
   if new_resource.pgsql
     filename = 'dvwa-pg.sql'
@@ -49,6 +50,9 @@ action :create do
     connection_info[:username] = 'root'
     connection_info[:password] = 'toor'
 
+    package 'libmysqlclient-dev'
+    gem_package 'mysql2'
+
     include_recipe 'php::module_mysql'
 
     mysql_service 'default' do
@@ -70,6 +74,11 @@ action :create do
       connection connection_info
       action :create
     end
+
+    link '/run/mysqld/mysqld.sock' do
+      link_type :symbolic
+      to '/run/mysql-default/mysqld.sock'
+    end
   end
 
   directory 'create-sql-dir' do
@@ -87,11 +96,6 @@ action :create do
     provider provider
     sql { ::File.open("#{new_resource.dvwa_path}/sql/#{filename}").read }
     action :query
-  end
-
-  directory 'remove-sql-dir' do
-    path "#{new_resource.dvwa_path}/sql"
-    action :delete
   end
 
   new_resource.updated_by_last_action(true)

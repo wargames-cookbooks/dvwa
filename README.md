@@ -7,9 +7,7 @@ Requirements
 ------------
 
 #### Platform
-- `Ubuntu 10.04`
 - `Ubuntu 12.04`
-- `CentOS 6.4`
 
 #### Cookbooks
 - `apache2` - https://github.com/opscode-cookbooks/apache2.git

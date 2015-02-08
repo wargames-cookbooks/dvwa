@@ -4,77 +4,29 @@ driver_config:
   require_chef_omnibus: true
 
 platforms:
-- name: ubuntu-10.04
-  driver_config:
-    box: opscode-ubuntu-10.04
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-10.04_provisionerless.box
 - name: ubuntu-12.04
-  driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box
-- name: centos-6.4
-  driver_config:
-    box: opscode-centos-6.4
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
+  run_list:
+  - recipe[apt]
 
 suites:
-- name: "default"
+- name: dvwa-mysql
   run_list:
-    - recipe[dvwa]
-  attributes: {
-    mysql: {
-      server_root_password: root,
-      server_debian_password: root,
-      server_repl_password: = root
-    },
-    postgresql: {
-      password: {
-        postgres: postgres
-      }
-    },
-    dvwa: {
-      db: {
-        use_psql: false
-      }
-    }
-  }
-- name: "dvwa-mysql"
+  - recipe[dvwa]
+  attributes:
+    dvwa:
+      db:
+        use_pgsql: false
+- name: dvwa-postgresql
   run_list:
-    - recipe[dvwa]
-  attributes: {
-    mysql: {
-      server_root_password: root,
-      server_debian_password: root,
-      server_repl_password: = root
-    },
-    postgresql: {
-      password: {
+  - recipe[postgresql::apt_pgdg_postgresql]
+  - recipe[postgresql::ruby]
+  - recipe[postgresql::client]
+  - recipe[postgresql::server]
+  - recipe[dvwa]
+  attributes:
+    postgresql:
+      password:
         postgres: postgres
-      }
-    },
-    dvwa: {
-      db: {
-        use_psql: false
-      }
-    }
-  }
-- name: "dvwa-postgresql"
-  run_list:
-    - recipe[dvwa]
-  attributes: {
-    mysql: {
-      server_root_password: root,
-      server_debian_password: root,
-      server_repl_password: = root
-    },
-    postgresql: {
-      password: {
-        postgres: postgres
-      }
-    },
-    dvwa: {
-      db: {
-        use_psql: true
-      }
-    }
-  }
+    dvwa:
+      db:
+        use_pgsql: true

@@ -34,30 +34,30 @@ describe 'dvwa::default' do
       stub_command('ls /recovery.conf').and_return(true)
     end
 
-    it 'does include required recipes for webapp' do
+    it 'should include required recipes for webapp' do
       expect(subject).to include_recipe('apache2')
       expect(subject).to include_recipe('php')
       expect(subject).to include_recipe('apache2::mod_php5')
     end
 
-    it 'does download dvwa archive' do
+    it 'should download dvwa archive' do
       expect(subject).to create_remote_file('/var/chef/cache/dvwa.tar.gz')
         .with(source: 'https://github.com/RandomStorm/DVWA/archive/2.tar.gz')
     end
 
-    it 'does create directory for dvwa application' do
+    it 'should create directory for dvwa application' do
       expect(subject).to create_directory('/opt/dvwa-app')
         .with(recursive: true)
     end
 
-    it 'does untar dvwa archive in created directory' do
+    it 'should untar dvwa archive in created directory' do
       expect(subject).to run_execute('untar-dvwa')
         .with(cwd: '/opt/dvwa-app',
               command: 'tar --strip-components 1 -xzf '\
                        '/var/chef/cache/dvwa.tar.gz')
     end
 
-    it 'does create config file from template' do
+    it 'should create config file from template' do
       config_file = '/opt/dvwa-app/config/config.inc.php'
       matches = [/^\$DBMS = 'PGSQL';$/,
                  /^\$_DVWA\['db_server'\] = '127.0.0.1';$/,
@@ -77,14 +77,14 @@ describe 'dvwa::default' do
       end
     end
 
-    it 'does create missing tmp directory for phpids plugin' do
+    it 'should create missing tmp directory for phpids plugin' do
       expect(subject).to create_directory(
         '/opt/dvwa-app/external/phpids/0.6/lib/IDS/tmp').with(owner: 'www-data',
                                                               group: 'www-data',
                                                               recursive: true)
     end
 
-    it 'does setup dvwa database' do
+    it 'should setup dvwa database' do
       expect(subject).to create_dvwa_db('dvwadb')
         .with(pgsql: true,
               server: '127.0.0.1',
@@ -94,20 +94,21 @@ describe 'dvwa::default' do
               dvwa_path: '/opt/dvwa-app')
     end
 
-    it 'does include module_pgsql recipe of php cookbook' do
+    it 'should include module_pgsql recipe of php cookbook' do
       expect(subject).to include_recipe('php::module_pgsql')
     end
 
-    it 'does create pgsql user' do
+    it 'should create pgsql user' do
       expect(subject).to create_postgresql_database_user('dvwauser')
         .with(password: 'dvwapass',
               connection: { host: '127.0.0.1',
                             port: 1337,
                             username: 'postgres',
-                            password: 'foobar' })
+                            password: 'foobar',
+                            socket: '/run/mysql-default/mysqld.sock' })
     end
 
-    it 'does create pgsql database' do
+    it 'should create pgsql database' do
       expect(subject).to create_postgresql_database('dvwadb')
         .with(template: 'DEFAULT',
               encoding: 'DEFAULT',
@@ -117,21 +118,22 @@ describe 'dvwa::default' do
               connection: { host: '127.0.0.1',
                             port: 1337,
                             username: 'postgres',
-                            password: 'foobar' })
+                            password: 'foobar',
+                            socket: '/run/mysql-default/mysqld.sock' })
     end
 
-    it 'does create temporary sql directory' do
+    it 'should create sql directory' do
       expect(subject).to create_directory('create-sql-dir')
         .with(mode: '0700',
               path: '/opt/dvwa-app/sql')
     end
 
-    it 'does copy cookbook file that contains sql queries' do
+    it 'should copy cookbook file that contains sql queries' do
       expect(subject).to create_cookbook_file('/opt/dvwa-app/sql/dvwa-pg.sql')
         .with(source: 'dvwa-pg.sql')
     end
 
-    it 'does init dvwa database with sql queries' do
+    it 'should init dvwa database with sql queries' do
       expect(subject).to query_database(
         'Setup database (Chef::Provider::Database::Postgresql)')
         .with(database_name: 'dvwadb',
@@ -139,12 +141,8 @@ describe 'dvwa::default' do
               connection: { host: '127.0.0.1',
                             port: 1337,
                             username: 'postgres',
-                            password: 'foobar' })
-    end
-
-    it 'does remove temporary directory' do
-      expect(subject).to delete_directory('remove-sql-dir')
-        .with(path: '/opt/dvwa-app/sql')
+                            password: 'foobar',
+                            socket: '/run/mysql-default/mysqld.sock' })
     end
   end
 
@@ -170,7 +168,7 @@ describe 'dvwa::default' do
       stub_command('ls /recovery.conf').and_return(true)
     end
 
-    it 'does create config file from template' do
+    it 'should create config file from template' do
       config_file = '/opt/dvwa-app/config/config.inc.php'
       matches = [/^\$DBMS = 'MySQL';$/,
                  /^\$_DVWA\['db_server'\] = '127.0.0.1';$/,
@@ -190,7 +188,7 @@ describe 'dvwa::default' do
       end
     end
 
-    it 'does setup dvwa database' do
+    it 'should setup dvwa database' do
       expect(subject).to create_dvwa_db('dvwadb')
         .with(pgsql: false,
               server: '127.0.0.1',
@@ -199,47 +197,58 @@ describe 'dvwa::default' do
               password: 'dvwapass')
     end
 
-    it 'does include module_mysql recipe of php cookbook' do
+    it 'should install libmysqlclient-dev package' do
+      expect(subject).to install_package('libmysqlclient-dev')
+    end
+
+    it 'should install mysql2 gem package' do
+      expect(subject).to install_gem_package('mysql2')
+    end
+
+    it 'should include module_mysql recipe of php cookbook' do
       expect(subject).to include_recipe('php::module_mysql')
     end
 
-    it 'does setup mysql service' do
+    it 'should setup mysql service' do
       expect(subject).to create_mysql_service('default')
         .with(port: '3306',
               version: '5.5',
               initial_root_password: 'toor')
     end
 
-    it 'does create database user' do
+    it 'should create database user' do
       expect(subject).to grant_mysql_database_user('dvwauser')
         .with(password: 'dvwapass',
               database_name: 'dvwadb',
               privileges: [:select, :update, :insert, :create, :delete, :drop],
               connection: { host: '127.0.0.1',
                             username: 'root',
-                            password: 'toor' })
+                            password: 'toor',
+                            socket: '/run/mysql-default/mysqld.sock' })
     end
 
-    it 'does create mysql database' do
+    it 'should create mysql database' do
       expect(subject).to create_mysql_database('dvwadb')
         .with(connection: { host: '127.0.0.1',
                             username: 'root',
-                            password: 'toor' })
+                            password: 'toor',
+                            socket: '/run/mysql-default/mysqld.sock' })
     end
 
-    it 'does copy cookbook file that contains sql queries' do
+    it 'should copy cookbook file that contains sql queries' do
       expect(subject).to create_cookbook_file('/opt/dvwa-app/sql/dvwa-my.sql')
         .with(source: 'dvwa-my.sql')
     end
 
-    it 'does init dvwa database with sql queries' do
+    it 'should init dvwa database with sql queries' do
       expect(subject).to query_database(
         'Setup database (Chef::Provider::Database::Mysql)')
         .with(database_name: 'dvwadb',
               provider: Chef::Provider::Database::Mysql,
               connection: { host: '127.0.0.1',
                             username: 'root',
-                            password: 'toor' })
+                            password: 'toor',
+                            socket: '/run/mysql-default/mysqld.sock' })
     end
   end
 end

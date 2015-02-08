@@ -30,7 +30,7 @@ default['dvwa']['apache2']['server_aliases'] = ['dvwa']
 
 default['dvwa']['db']['use_pgsql'] = false
 default['dvwa']['db']['server'] = 'localhost'
-default['dvwa']['db']['port'] = 5432 # Only needed for pgsql dbms
+default['dvwa']['db']['port'] = 5432
 default['dvwa']['db']['name'] = 'dvwa'
 default['dvwa']['db']['username'] = 'dvwa'
 default['dvwa']['db']['password'] = 'dvwa'
