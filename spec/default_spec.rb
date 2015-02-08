@@ -98,22 +98,30 @@ describe 'dvwa::default' do
               connection: { host: '127.0.0.1',
                             port: 1337,
                             username: 'postgres',
-                            password: 'foobar',
-                            socket: '/run/mysql-default/mysqld.sock' })
+                            password: 'foobar' })
+    end
+
+    it 'should drop pgsql database' do
+      expect(subject).to drop_postgresql_database('drop-dvwa-db')
+        .with(database_name: 'dvwadb',
+              connection: { host: '127.0.0.1',
+                            port: 1337,
+                            username: 'postgres',
+                            password: 'foobar' })
     end
 
     it 'should create pgsql database' do
-      expect(subject).to create_postgresql_database('dvwadb')
+      expect(subject).to create_postgresql_database('create-dvwa-db')
         .with(template: 'DEFAULT',
               encoding: 'DEFAULT',
               tablespace: 'DEFAULT',
               connection_limit: '-1',
+              database_name: 'dvwadb',
               owner: 'dvwauser',
               connection: { host: '127.0.0.1',
                             port: 1337,
                             username: 'postgres',
-                            password: 'foobar',
-                            socket: '/run/mysql-default/mysqld.sock' })
+                            password: 'foobar' })
     end
 
     it 'should create sql directory' do
@@ -135,8 +143,7 @@ describe 'dvwa::default' do
               connection: { host: '127.0.0.1',
                             port: 1337,
                             username: 'postgres',
-                            password: 'foobar',
-                            socket: '/run/mysql-default/mysqld.sock' })
+                            password: 'foobar' })
     end
   end
 
@@ -224,9 +231,19 @@ describe 'dvwa::default' do
                             socket: '/run/mysql-default/mysqld.sock' })
     end
 
+    it 'should drop mysql database' do
+      expect(subject).to drop_mysql_database('drop-dvwa-db')
+        .with(database_name: 'dvwadb',
+              connection: { host: '127.0.0.1',
+                            username: 'root',
+                            password: 'toor',
+                            socket: '/run/mysql-default/mysqld.sock' })
+    end
+
     it 'should create mysql database' do
-      expect(subject).to create_mysql_database('dvwadb')
-        .with(connection: { host: '127.0.0.1',
+      expect(subject).to create_mysql_database('create-dvwa-db')
+        .with(database_name: 'dvwadb',
+              connection: { host: '127.0.0.1',
                             username: 'root',
                             password: 'toor',
                             socket: '/run/mysql-default/mysqld.sock' })
