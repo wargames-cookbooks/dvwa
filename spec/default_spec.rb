@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-require 'rspec/expectations'
-require 'chefspec'
-require 'chefspec/berkshelf'
-
-ChefSpec::Coverage.start! { add_filter 'dvwa' }
-
-require 'chef/application'
+require 'spec_helper'
 
 describe 'dvwa::default' do
+  before do
+    stub_command('/usr/sbin/apache2 -t').and_return(true)
+    stub_command('ls /recovery.conf').and_return(true)
+  end
+
   context 'with postgresql' do
     let(:subject) do
       ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache',
@@ -27,11 +26,6 @@ describe 'dvwa::default' do
         node.set['postgresql']['password']['postgres'] = 'foobar'
         node.set['postgresql']['config'] = {}
       end.converge(described_recipe)
-    end
-
-    before do
-      stub_command('/usr/sbin/apache2 -t').and_return(true)
-      stub_command('ls /recovery.conf').and_return(true)
     end
 
     it 'should include required recipes for webapp' do
@@ -163,9 +157,12 @@ describe 'dvwa::default' do
       end.converge(described_recipe)
     end
 
-    before do
-      stub_command('/usr/sbin/apache2 -t').and_return(true)
-      stub_command('ls /recovery.conf').and_return(true)
+    it 'should install libmysqlclient-dev package' do
+      expect(subject).to install_package('libmysqlclient-dev')
+    end
+
+    it 'should install mysql2 gem package' do
+      expect(subject).to install_gem_package('mysql2')
     end
 
     it 'should create config file from template' do
@@ -249,6 +246,13 @@ describe 'dvwa::default' do
                             username: 'root',
                             password: 'toor',
                             socket: '/run/mysql-default/mysqld.sock' })
+    end
+
+    it 'should create symblink for mysql socket'\
+       ', can\'t configure socket in dvwa..' do
+      expect(subject).to create_link('/run/mysqld/mysqld.sock')
+        .with(link_type: :symbolic,
+              to: '/run/mysql-default/mysqld.sock')
     end
   end
 end

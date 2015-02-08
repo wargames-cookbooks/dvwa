@@ -19,8 +19,9 @@ suites:
 - name: dvwa-postgresql
   run_list:
   - recipe[postgresql::apt_pgdg_postgresql]
-  - recipe[postgresql::ruby]
   - recipe[postgresql::client]
+  - recipe[dvwa::pg_omnibus]
+  - recipe[dvwa::gem_pg]
   - recipe[postgresql::server]
   - recipe[dvwa]
   attributes:

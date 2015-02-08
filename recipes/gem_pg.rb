@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 #
+# Cookbook Name:: dvwa
+# Recipe:: gem_pg
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,22 +16,6 @@
 # limitations under the License.
 #
 
-name 'dvwa'
-maintainer 'Sliim'
-maintainer_email 'sliim@mailoo.org'
-license 'Apache 2.0'
-description 'Installs/Configures Damn Vulnerable Web Application'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.1.3'
-
-recipe 'default', 'Installs/configures dvwa webapp'
-recipe 'gem_pg', 'Install pg gem'
-recipe 'pg_omnibus', 'Workaround for pg gen on chef omnibus'
-
-depends 'apache2'
-depends 'mysql'
-depends 'postgresql'
-depends 'php'
-depends 'database'
-
-supports 'ubuntu'
+package 'libpq5'
+package 'libpq-dev'
+gem_package 'pg'
