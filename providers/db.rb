@@ -104,13 +104,13 @@ action :create do
     source filename
   end
 
-  # sql_server_database "Setup database (#{provider})" do
-  #   connection connection_info
-  #   database_name new_resource.name
-  #   provider provider
-  #   sql { ::File.open("#{new_resource.dvwa_path}/sql/#{filename}").read }
-  #   action :query
-  # end
+  sql_server_database "Setup database (#{provider})" do
+    connection connection_info
+    database_name new_resource.name
+    provider provider
+    sql { ::File.open("#{new_resource.dvwa_path}/sql/#{filename}").read }
+    action :query
+  end
 
   new_resource.updated_by_last_action(true)
 end
