@@ -122,6 +122,33 @@ Just include `dvwa` in your node's `run_list`:
 }
 ```
 
+For PostgreSQL support, you need to include some extras recipes:
+```json
+{
+  "name":"my_node",
+  "run_list": [
+    "recipe[postgresql::apt_pgdg_postgresql]",
+    "recipe[postgresql::client]",
+    "recipe[dvwa::pg_omnibus]",
+    "recipe[dvwa::gem_pg]",
+    "recipe[postgresql::server]",
+    "recipe[dvwa]"
+  ],
+  "attributes": {
+    "postgresql": {
+      "password": {
+        "postgres": "postgres"
+      }
+    },
+    "dvwa": {
+      "db": {
+        "use_pgsql": true
+      }
+    }
+  }
+}
+```
+
 #### Running tests
 
 - First, install dependencies:  
