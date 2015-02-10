@@ -134,17 +134,6 @@ describe 'dvwa::default' do
       expect(subject).to create_cookbook_file('/opt/dvwa-app/sql/dvwa-pg.sql')
         .with(source: 'dvwa-pg.sql')
     end
-
-    it 'should init dvwa database with sql queries' do
-      expect(subject).to query_database(
-        'Setup database (Chef::Provider::Database::Postgresql)')
-        .with(database_name: 'dvwadb',
-              provider: Chef::Provider::Database::Postgresql,
-              connection: { host: '127.0.0.1',
-                            port: 1337,
-                            username: 'postgres',
-                            password: 'foobar' })
-    end
   end
 
   context 'with mysql' do
