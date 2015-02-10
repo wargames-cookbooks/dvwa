@@ -10,28 +10,102 @@ Requirements
 - `Ubuntu 12.04`
 
 #### Cookbooks
-- `apache2` - https://github.com/opscode-cookbooks/apache2.git
-- `mysql` - https://github.com/opscode-cookbooks/mysql.git
-- `php` - https://github.com/opscode-cookbooks/php.git
-- `database` - https://github.com/opscode-cookbooks/database.git
+- `apache2` - https://supermarket.chef.io/cookbooks/apache2
+- `php` - https://supermarket.chef.io/cookbooks/php
+- `database` - https://supermarket.chef.io/cookbooks/database
+- `mysql` - https://supermarket.chef.io/cookbooks/mysql
+- `postgresql` - https://supermarket.chef.io/cookbooks/postgresql
 
 Attributes
 ----------
 
 #### dvwa::default
-* `['dvwa']['db']['use_pgsql']` - Use Postgresql instead MySQL
-* `['dvwa']['db']['server']` - Database server host
-* `['dvwa']['db']['port']` - Database port, only needed for postgresql dbms
-* `['dvwa']['db']['name']` - Database name
-* `['dvwa']['db']['username']` - Database user name
-* `['dvwa']['db']['password']` - Database user password
-* `['dvwa']['recaptcha']['public_key']` - Recaptcha public key
-* `['dvwa']['recaptcha']['private_key']` - Recaptcha private key
-* `['dvwa']['apache2']['server_name']` - Apache2 server name
-* `['dvwa']['apache2']['server_aliases']` - Array of apache2 virtualhost aliases
-* `['dvwa']['version']` - DVWA version to deploy
-* `['dvwa']['path']` - Path where application will be deployed
-* `['dvwa']['security_level']` - DVWA default security level
+<table>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+<tr>
+<td><tt>['dvwa']['db']['use_pgsql']</tt></td>
+<td>Boolean</td>
+<td>Use Postgresql instead MySQL.</td>
+<td><tt>false</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['db']['server']</tt></td>
+<td>String</td>
+<td>Database server host</td>
+<td><tt>localhost</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['db']['port']</tt></td>
+<td>Integer</td>
+<td>Database port, only needed for postgresql dbms</td>
+<td><tt>5432</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['db']['name']</tt></td>
+<td>String</td>
+<td>Database name</td>
+<td><tt>dvwa</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['db']['username']</tt></td>
+<td>String</td>
+<td>Database user name</td>
+<td><tt>dvwa</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['db']['password']</tt></td>
+<td>String</td>
+<td>Database user password</td>
+<td><tt>dvwa</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['recaptcha']['public_key']</tt></td>
+<td>String</td>
+<td>Recaptcha public key</td>
+<td><tt>6LfzKeUSAAAAABbGMjVS77HmkY7emIB9v5VGeEvb</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['recaptcha']['private_key']</tt></td>
+<td>String</td>
+<td>Recaptcha private key</td>
+<td><tt>6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['apache2']['server_name']</tt></td>
+<td>String</td>
+<td>Apache2 server name</td>
+<td><tt>dvwa</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['apache2']['server_aliases']</tt></td>
+<td>Array</td>
+<td>Array of apache2 virtualhost aliases</td>
+<td><tt>[dvwa]</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['version']</tt></td>
+<td>String</td>
+<td>DVWA version to deploy</td>
+<td><tt>v1.0.8</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['path']</tt></td>
+<td>String</td>
+<td>Path where application will be deployed</td>
+<td><tt>/opt/dvwa</tt></td>
+</tr>
+<tr>
+<td><tt>['dvwa']['security_level']</tt></td>
+<td>String</td>
+<td>DVWA default security level</td>
+<td><tt>high</tt></td>
+</tr>
+</table>
 
 Usage
 -----

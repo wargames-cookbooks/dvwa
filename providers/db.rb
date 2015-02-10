@@ -104,7 +104,7 @@ action :create do
     source filename
   end
 
-  sql_server_database "Setup database (#{provider})" do
+  database "Setup database (#{provider})" do
     connection connection_info
     database_name new_resource.name
     provider provider

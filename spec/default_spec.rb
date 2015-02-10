@@ -254,17 +254,6 @@ describe 'dvwa::default' do
         .with(source: 'dvwa-my.sql')
     end
 
-    it 'should init dvwa database with sql queries' do
-      expect(subject).to query_database(
-        'Setup database (Chef::Provider::Database::Mysql)')
-        .with(database_name: 'dvwadb',
-              provider: Chef::Provider::Database::Mysql,
-              connection: { host: '127.0.0.1',
-                            username: 'root',
-                            password: 'toor',
-                            socket: '/run/mysql-default/mysqld.sock' })
-    end
-
     it 'should create symblink for mysql socket'\
        ', can\'t configure socket in dvwa..' do
       expect(subject).to create_link('/run/mysqld/mysqld.sock')
