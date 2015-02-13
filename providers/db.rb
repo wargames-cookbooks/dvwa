@@ -20,9 +20,18 @@ include Chef::DSL::IncludeRecipe
 
 action :create do
   connection_info = { host: new_resource.server }
+  filename = new_resource.pgsql ? 'dvwa-pg.sql' : 'dvwa-my.sql'
+
+  directory 'create-sql-dir' do
+    path "#{new_resource.dvwa_path}/sql"
+    mode '0700'
+  end
+
+  cookbook_file "#{new_resource.dvwa_path}/sql/#{filename}" do
+    source filename
+  end
 
   if new_resource.pgsql
-    filename = 'dvwa-pg.sql'
     provider = Chef::Provider::Database::Postgresql
     connection_info[:port] = new_resource.port
     connection_info[:username] = 'postgres'
@@ -49,6 +58,14 @@ action :create do
       connection_limit '-1'
       database_name new_resource.name
       owner new_resource.username
+    end
+
+    database "Setup database (#{provider})" do
+      connection connection_info
+      database_name new_resource.name
+      provider provider
+      sql { ::File.open("#{new_resource.dvwa_path}/sql/#{filename}").read }
+      action :query
     end
   else
     filename = 'dvwa-my.sql'
@@ -89,27 +106,18 @@ action :create do
       action :create
     end
 
+    execute 'import-mysql-dump' do
+      command "mysql -h #{connection_info[:host]} "\
+              "-u #{connection_info[:username]} "\
+              "-p#{connection_info[:password]} "\
+              '--socket /run/mysql-default/mysqld.sock '\
+              "#{new_resource.name} < #{new_resource.dvwa_path}/sql/#{filename}"
+    end
+
     link '/run/mysqld/mysqld.sock' do
       link_type :symbolic
       to '/run/mysql-default/mysqld.sock'
     end
-  end
-
-  directory 'create-sql-dir' do
-    path "#{new_resource.dvwa_path}/sql"
-    mode '0700'
-  end
-
-  cookbook_file "#{new_resource.dvwa_path}/sql/#{filename}" do
-    source filename
-  end
-
-  database "Setup database (#{provider})" do
-    connection connection_info
-    database_name new_resource.name
-    provider provider
-    sql { ::File.open("#{new_resource.dvwa_path}/sql/#{filename}").read }
-    action :query
   end
 
   new_resource.updated_by_last_action(true)

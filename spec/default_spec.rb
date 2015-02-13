@@ -78,6 +78,17 @@ describe 'dvwa::default' do
                                                               recursive: true)
     end
 
+    it 'should create sql directory' do
+      expect(subject).to create_directory('create-sql-dir')
+        .with(mode: '0700',
+              path: '/opt/dvwa-app/sql')
+    end
+
+    it 'should copy cookbook file that contains sql queries' do
+      expect(subject).to create_cookbook_file('/opt/dvwa-app/sql/dvwa-pg.sql')
+        .with(source: 'dvwa-pg.sql')
+    end
+
     it 'should setup dvwa database' do
       expect(subject).to create_dvwa_db('dvwadb')
         .with(pgsql: true,
@@ -122,17 +133,6 @@ describe 'dvwa::default' do
                             port: 1337,
                             username: 'postgres',
                             password: 'foobar' })
-    end
-
-    it 'should create sql directory' do
-      expect(subject).to create_directory('create-sql-dir')
-        .with(mode: '0700',
-              path: '/opt/dvwa-app/sql')
-    end
-
-    it 'should copy cookbook file that contains sql queries' do
-      expect(subject).to create_cookbook_file('/opt/dvwa-app/sql/dvwa-pg.sql')
-        .with(source: 'dvwa-pg.sql')
     end
   end
 
@@ -241,6 +241,13 @@ describe 'dvwa::default' do
     it 'should copy cookbook file that contains sql queries' do
       expect(subject).to create_cookbook_file('/opt/dvwa-app/sql/dvwa-my.sql')
         .with(source: 'dvwa-my.sql')
+    end
+
+    it 'should populate vicnum database with mysql dump' do
+      expect(subject).to run_execute('import-mysql-dump')
+        .with(command: 'mysql -h 127.0.0.1 -u root -ptoor '\
+                       '--socket /run/mysql-default/mysqld.sock '\
+                       'dvwadb < /opt/dvwa-app/sql/dvwa-my.sql')
     end
 
     it 'should create symblink for mysql socket'\
