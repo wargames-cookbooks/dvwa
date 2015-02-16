@@ -2,9 +2,20 @@
 
 This file is used to list changes made in each version of dvwa.
 
-## 0.1.0:
+## 0.2.0:
 
-* Initial release of dvwa
+* Chef 12 compatibility
+* Use Rake instead of Strainer
+* Test hardness (rubocop, chefspec)
+
+
+## 0.1.3:
+
+* Changed license for Apache 2.0
+
+## 0.1.2:
+
+* Integration testing with serverspec and test-kitchen
 
 ## 0.1.1:
 
@@ -14,10 +25,6 @@ This file is used to list changes made in each version of dvwa.
 * Added travis continuous integration
 * Tests refactoring
 
-## 0.1.2:
+## 0.1.0:
 
-* Integration testing with serverspec and test-kitchen
-
-## 0.1.3:
-
-* Changed license for Apache 2.0
+* Initial release of dvwa
