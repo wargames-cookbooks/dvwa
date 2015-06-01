@@ -14,6 +14,7 @@ Requirements
 - `php` - https://supermarket.chef.io/cookbooks/php
 - `database` - https://supermarket.chef.io/cookbooks/database
 - `mysql` - https://supermarket.chef.io/cookbooks/mysql
+- `mysql2_chef_gem` - https://supermarket.chef.io/cookbooks/mysql2_chef_gem
 - `postgresql` - https://supermarket.chef.io/cookbooks/postgresql
 
 Attributes

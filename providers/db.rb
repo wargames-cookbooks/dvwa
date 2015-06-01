@@ -74,9 +74,7 @@ action :create do
     connection_info[:password] = 'toor'
     connection_info[:socket] = '/run/mysql-default/mysqld.sock'
 
-    package 'libmysqlclient-dev'
-    gem_package 'mysql2'
-
+    mysql2_chef_gem 'default'
     include_recipe 'php::module_mysql'
 
     mysql_service 'default' do

@@ -27,6 +27,7 @@ recipe 'pg_omnibus', 'Workaround for pg gen on chef omnibus'
 
 depends 'apache2'
 depends 'mysql'
+depends 'mysql2_chef_gem'
 depends 'postgresql'
 depends 'php'
 depends 'database'
