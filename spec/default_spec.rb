@@ -153,12 +153,8 @@ describe 'dvwa::default' do
       end.converge(described_recipe)
     end
 
-    it 'should install libmysqlclient-dev package' do
-      expect(subject).to install_package('libmysqlclient-dev')
-    end
-
     it 'should install mysql2 gem package' do
-      expect(subject).to install_gem_package('mysql2')
+      expect(subject).to install_mysql2_chef_gem('default')
     end
 
     it 'should create config file from template' do
@@ -190,12 +186,8 @@ describe 'dvwa::default' do
               password: 'dvwapass')
     end
 
-    it 'should install libmysqlclient-dev package' do
-      expect(subject).to install_package('libmysqlclient-dev')
-    end
-
     it 'should install mysql2 gem package' do
-      expect(subject).to install_gem_package('mysql2')
+      expect(subject).to install_mysql2_chef_gem('default')
     end
 
     it 'should include module_mysql recipe of php cookbook' do
