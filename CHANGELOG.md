@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of dvwa.
 
+## 0.2.1:
+
+* Install mysql2 gem package with `mysql2_chef_gem` cookbook
+
 ## 0.2.0:
 
 * Chef 12 compatibility
