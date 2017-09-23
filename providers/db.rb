@@ -16,6 +16,8 @@
 # limitations under the License.
 #
 
+use_inline_resources
+
 include Chef::DSL::IncludeRecipe
 
 action :create do
@@ -117,6 +119,4 @@ action :create do
       to '/run/mysql-default/mysqld.sock'
     end
   end
-
-  new_resource.updated_by_last_action(true)
 end

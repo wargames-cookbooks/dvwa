@@ -17,6 +17,9 @@
 #
 
 actions :create
+default_action :create
+resource_name :dvwa_db
+
 attribute :name, kind_of: String
 attribute :pgsql, kind_of: [TrueClass, FalseClass], default: false
 attribute :server, kind_of: String
@@ -24,9 +27,3 @@ attribute :port, kind_of: Integer
 attribute :username, kind_of: String
 attribute :password, kind_of: String
 attribute :dvwa_path, kind_of: String
-
-def initialize(*args)
-  super
-  @action = :create
-  @resource_name = :dvwa_db
-end
