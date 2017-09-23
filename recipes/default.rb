@@ -18,7 +18,7 @@
 
 include_recipe 'apache2'
 include_recipe 'php'
-include_recipe 'apache2::mod_php5'
+include_recipe 'apache2::mod_php'
 
 # Apache2 configuration
 apache_site 'default' do

@@ -21,4 +21,6 @@ cookbook_file "#{Chef::Config[:file_cache_path]}/pg-chef-omnibus.sh" do
   mode '0755'
 end
 
-execute "#{Chef::Config[:file_cache_path]}/pg-chef-omnibus.sh"
+execute "#{Chef::Config[:file_cache_path]}/pg-chef-omnibus.sh" do
+  cwd Chef::Config[:file_cache_path]
+end

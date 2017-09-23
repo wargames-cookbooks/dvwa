@@ -4,7 +4,7 @@ driver_config:
   require_chef_omnibus: true
 
 platforms:
-- name: ubuntu-12.04
+- name: ubuntu-14.04
   run_list:
   - recipe[apt]
 

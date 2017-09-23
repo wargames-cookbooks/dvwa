@@ -3,7 +3,10 @@
 require 'spec_helper'
 
 describe 'dvwa::gem_pg' do
-  subject { ChefSpec::SoloRunner.new.converge(described_recipe) }
+  let(:subject) do
+    ChefSpec::SoloRunner.new(platform: 'debian',
+                             version: '9.0').converge(described_recipe)
+  end
 
   it 'should install libpq packages' do
     expect(subject).to install_package('libpq5')

@@ -11,27 +11,30 @@ describe 'dvwa::default' do
   context 'with postgresql' do
     let(:subject) do
       ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache',
-                               step_into: ['dvwa_db']) do |node|
-        node.set['dvwa']['version'] = '2'
-        node.set['dvwa']['path'] = '/opt/dvwa-app'
-        node.set['dvwa']['security_level'] = 'low'
-        node.set['dvwa']['recaptcha']['public_key'] = 'recap_pubkey'
-        node.set['dvwa']['recaptcha']['private_key'] = 'recap_private_key'
-        node.set['dvwa']['db']['use_pgsql'] = true
-        node.set['dvwa']['db']['server'] = '127.0.0.1'
-        node.set['dvwa']['db']['port'] = 1337
-        node.set['dvwa']['db']['name'] = 'dvwadb'
-        node.set['dvwa']['db']['username'] = 'dvwauser'
-        node.set['dvwa']['db']['password'] = 'dvwapass'
-        node.set['postgresql']['password']['postgres'] = 'foobar'
-        node.set['postgresql']['config'] = {}
+                               step_into: %w(dvwa_db),
+                               platform: 'debian',
+                               version: '9.0') do |node|
+        node.override['apache']['mpm'] = 'prefork'
+        node.override['dvwa']['version'] = '2'
+        node.override['dvwa']['path'] = '/opt/dvwa-app'
+        node.override['dvwa']['security_level'] = 'low'
+        node.override['dvwa']['recaptcha']['public_key'] = 'recap_pubkey'
+        node.override['dvwa']['recaptcha']['private_key'] = 'recap_private_key'
+        node.override['dvwa']['db']['use_pgsql'] = true
+        node.override['dvwa']['db']['server'] = '127.0.0.1'
+        node.override['dvwa']['db']['port'] = 1337
+        node.override['dvwa']['db']['name'] = 'dvwadb'
+        node.override['dvwa']['db']['username'] = 'dvwauser'
+        node.override['dvwa']['db']['password'] = 'dvwapass'
+        node.override['postgresql']['password']['postgres'] = 'foobar'
+        node.override['postgresql']['config'] = {}
       end.converge(described_recipe)
     end
 
     it 'should include required recipes for webapp' do
       expect(subject).to include_recipe('apache2')
       expect(subject).to include_recipe('php')
-      expect(subject).to include_recipe('apache2::mod_php5')
+      expect(subject).to include_recipe('apache2::mod_php')
     end
 
     it 'should download dvwa archive' do
@@ -139,17 +142,20 @@ describe 'dvwa::default' do
   context 'with mysql' do
     let(:subject) do
       ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache',
-                               step_into: ['dvwa_db']) do |node|
-        node.set['dvwa']['path'] = '/opt/dvwa-app'
-        node.set['dvwa']['security_level'] = 'low'
-        node.set['dvwa']['recaptcha']['public_key'] = 'recap_pubkey'
-        node.set['dvwa']['recaptcha']['private_key'] = 'recap_private_key'
-        node.set['dvwa']['db']['use_pgsql'] = false
-        node.set['dvwa']['db']['server'] = '127.0.0.1'
-        node.set['dvwa']['db']['port'] = 1337
-        node.set['dvwa']['db']['name'] = 'dvwadb'
-        node.set['dvwa']['db']['username'] = 'dvwauser'
-        node.set['dvwa']['db']['password'] = 'dvwapass'
+                               step_into: %w(dvwa_db),
+                               platform: 'debian',
+                               version: '9.0') do |node|
+        node.override['apache']['mpm'] = 'prefork'
+        node.override['dvwa']['path'] = '/opt/dvwa-app'
+        node.override['dvwa']['security_level'] = 'low'
+        node.override['dvwa']['recaptcha']['public_key'] = 'recap_pubkey'
+        node.override['dvwa']['recaptcha']['private_key'] = 'recap_private_key'
+        node.override['dvwa']['db']['use_pgsql'] = false
+        node.override['dvwa']['db']['server'] = '127.0.0.1'
+        node.override['dvwa']['db']['port'] = 1337
+        node.override['dvwa']['db']['name'] = 'dvwadb'
+        node.override['dvwa']['db']['username'] = 'dvwauser'
+        node.override['dvwa']['db']['password'] = 'dvwapass'
       end.converge(described_recipe)
     end
 

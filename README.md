@@ -7,7 +7,7 @@ Requirements
 ------------
 
 #### Platform
-- `Ubuntu 12.04`
+- `Ubuntu 14.04`
 
 #### Cookbooks
 - `apache2` - https://supermarket.chef.io/cookbooks/apache2
@@ -21,92 +21,21 @@ Attributes
 ----------
 
 #### dvwa::default
-<table>
-<tr>
-<th>Key</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-<tr>
-<td><tt>['dvwa']['db']['use_pgsql']</tt></td>
-<td>Boolean</td>
-<td>Use Postgresql instead MySQL.</td>
-<td><tt>false</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['db']['server']</tt></td>
-<td>String</td>
-<td>Database server host</td>
-<td><tt>localhost</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['db']['port']</tt></td>
-<td>Integer</td>
-<td>Database port, only needed for postgresql dbms</td>
-<td><tt>5432</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['db']['name']</tt></td>
-<td>String</td>
-<td>Database name</td>
-<td><tt>dvwa</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['db']['username']</tt></td>
-<td>String</td>
-<td>Database user name</td>
-<td><tt>dvwa</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['db']['password']</tt></td>
-<td>String</td>
-<td>Database user password</td>
-<td><tt>dvwa</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['recaptcha']['public_key']</tt></td>
-<td>String</td>
-<td>Recaptcha public key</td>
-<td><tt>6LfzKeUSAAAAABbGMjVS77HmkY7emIB9v5VGeEvb</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['recaptcha']['private_key']</tt></td>
-<td>String</td>
-<td>Recaptcha private key</td>
-<td><tt>6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['apache2']['server_name']</tt></td>
-<td>String</td>
-<td>Apache2 server name</td>
-<td><tt>dvwa</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['apache2']['server_aliases']</tt></td>
-<td>Array</td>
-<td>Array of apache2 virtualhost aliases</td>
-<td><tt>[dvwa]</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['version']</tt></td>
-<td>String</td>
-<td>DVWA version to deploy</td>
-<td><tt>v1.0.8</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['path']</tt></td>
-<td>String</td>
-<td>Path where application will be deployed</td>
-<td><tt>/opt/dvwa</tt></td>
-</tr>
-<tr>
-<td><tt>['dvwa']['security_level']</tt></td>
-<td>String</td>
-<td>DVWA default security level</td>
-<td><tt>high</tt></td>
-</tr>
-</table>
+| Key                               | Type   |  Description                                                                 |
+| --------------------------------- | ------- | --------------------------------------------------------------------------- |
+| `[dvwa][db][use_pgsql]`           | Boolean | Use Postgresql instead MySQL (default: `false`)                             |
+| `[dvwa][db][server]`              | String  | Database server host (default: `localhost`)                                 |
+| `[dvwa][db][port]`                | Integer | Database port, only needed for postgresql dbms (default: `5432`)            |
+| `[dvwa][db][name]`                | String  | Database name (default: `dvwa`)                                             |
+| `[dvwa][db][username]`            | String  | Database user name (default: `dvwa`)                                        |
+| `[dvwa][db][password]`            | String  | Database user password (default: `dvwa`)                                    |
+| `[dvwa][recaptcha][public_key]`   | String  | Recaptcha public key (default: `6LfzKeUSAAAAABbGMjVS77HmkY7emIB9v5VGeEvb`)  |
+| `[dvwa][recaptcha][private_key]`  | String  | Recaptcha private key (default: `6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF`) |
+| `[dvwa][apache2][server_name]`    | String  | Apache2 server name (default: `dvwa`)                                       |
+| `[dvwa][apache2][server_aliases]` | Array   | Array of apache2 virtualhost aliases (default: `[dvwa]`)                    |
+| `[dvwa][version]`                 | String  | DVWA version to deploy (default: `v1.0.8`)                                  |
+| `[dvwa][path]`                    | String  | Path where application will be deployed (default: `/opt/dvwa`)              |
+| `[dvwa][security_level]`          | String  | DVWA default security level (default: `high`)                               |
 
 Usage
 -----

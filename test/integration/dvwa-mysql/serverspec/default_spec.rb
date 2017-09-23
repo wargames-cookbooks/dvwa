@@ -33,7 +33,7 @@ describe file '/etc/apache2/sites-enabled/dvwa.conf' do
   it { should be_linked_to '../sites-available/dvwa.conf' }
 end
 
-describe service 'mysql' do
+describe service 'mysql-default' do
   it { should be_enabled }
   it { should be_running }
 end
