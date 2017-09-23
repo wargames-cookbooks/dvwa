@@ -20,10 +20,8 @@ default['dvwa']['version'] = 'v1.0.8'
 default['dvwa']['path'] = '/opt/dvwa'
 default['dvwa']['security_level'] = 'high'
 
-# rubocop:disable Metrics/LineLength
 default['dvwa']['recaptcha']['public_key'] = '6LfzKeUSAAAAABbGMjVS77HmkY7emIB9v5VGeEvb'
 default['dvwa']['recaptcha']['private_key'] = '6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF'
-# rubocop:enable Metrics/LineLength
 
 default['dvwa']['apache2']['server_name'] = 'dvwa'
 default['dvwa']['apache2']['server_aliases'] = ['dvwa']
