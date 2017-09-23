@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of dvwa.
 
+## 0.3.0:
+
+* Chef 13 compatibility
+* Support Ubuntu 14.04
+
 ## 0.2.1:
 
 * Install mysql2 gem package with `mysql2_chef_gem` cookbook
