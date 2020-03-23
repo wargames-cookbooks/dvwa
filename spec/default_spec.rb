@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 require 'spec_helper'
 
 describe 'dvwa::default' do
@@ -11,9 +10,7 @@ describe 'dvwa::default' do
   context 'with postgresql' do
     let(:subject) do
       ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache',
-                               step_into: %w(dvwa_db),
-                               platform: 'debian',
-                               version: '9.0') do |node|
+                               step_into: %w(dvwa_db)) do |node|
         node.override['apache']['mpm'] = 'prefork'
         node.override['dvwa']['version'] = '2'
         node.override['dvwa']['path'] = '/opt/dvwa-app'
@@ -142,9 +139,7 @@ describe 'dvwa::default' do
   context 'with mysql' do
     let(:subject) do
       ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache',
-                               step_into: %w(dvwa_db),
-                               platform: 'debian',
-                               version: '9.0') do |node|
+                               step_into: %w(dvwa_db)) do |node|
         node.override['apache']['mpm'] = 'prefork'
         node.override['dvwa']['path'] = '/opt/dvwa-app'
         node.override['dvwa']['security_level'] = 'low'
@@ -241,7 +236,7 @@ describe 'dvwa::default' do
         .with(source: 'dvwa-my.sql')
     end
 
-    it 'should populate vicnum database with mysql dump' do
+    it 'should populate dvwa database with mysql dump' do
       expect(subject).to run_execute('import-mysql-dump')
         .with(command: 'mysql -h 127.0.0.1 -u root -ptoor '\
                        '--socket /run/mysql-default/mysqld.sock '\

@@ -4,9 +4,7 @@ require 'spec_helper'
 
 describe 'dvwa::pg_omnibus' do
   let(:subject) do
-    ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache',
-                             platform: 'debian',
-                             version: '9.0').converge(described_recipe)
+    ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache').converge(described_recipe)
   end
 
   it 'should copy bash script file' do

@@ -18,24 +18,17 @@ maintainer 'Sliim'
 maintainer_email 'sliim@mailoo.org'
 license 'Apache-2.0'
 description 'Installs/Configures Damn Vulnerable Web Application'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-chef_version '>= 12.5' if respond_to?(:chef_version)
+chef_version '>= 12.5'
 version '0.3.0'
 
-recipe 'default', 'Installs/configures dvwa webapp'
-recipe 'gem_pg', 'Install pg gem'
-recipe 'pg_omnibus', 'Workaround for pg gen on chef omnibus'
-
-depends 'apache2'
+depends 'apache2', '<= 5.2.1'
 depends 'mysql'
 depends 'mysql2_chef_gem'
-depends 'postgresql'
-depends 'php'
+depends 'postgresql', '<= 6.1.4'
+depends 'php', '<= 4.6.0'
 depends 'database'
 
 supports 'ubuntu'
 
-source_url 'https://github.com/wargames-cookbooks/dvwa' if
-  respond_to?(:source_url)
-issues_url 'https://github.com/wargames-cookbooks/dvwa/issues' if
-  respond_to?(:issues_url)
+source_url 'https://github.com/wargames-cookbooks/dvwa'
+issues_url 'https://github.com/wargames-cookbooks/dvwa/issues'

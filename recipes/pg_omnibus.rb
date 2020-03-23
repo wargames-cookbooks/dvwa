@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Cookbook Name:: dvwa
+# Cookbook:: dvwa
 # Recipe:: pg_omnibus
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
