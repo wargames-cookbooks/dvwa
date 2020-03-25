@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-
-require 'serverspec'
-set :backend, :exec
-
 describe file '/opt/dvwa' do
   it { should be_directory }
-  it { should be_owned_by 'root' }
-  it { should be_grouped_into 'root' }
-  it { should be_mode 755 }
+  it { should be_owned_by 'www-data' }
+  it { should be_grouped_into 'www-data' }
+  its(:mode) { should cmp '0755' }
 end
 
 describe service 'apache2' do
@@ -23,14 +18,14 @@ describe file '/etc/apache2/sites-available/dvwa.conf' do
   it { should be_file }
   it { should be_owned_by 'root' }
   it { should be_grouped_into 'root' }
-  it { should be_mode 644 }
+  its(:mode) { should cmp '0644' }
 end
 
 describe file '/etc/apache2/sites-enabled/dvwa.conf' do
   it { should be_file }
   it { should be_owned_by 'root' }
   it { should be_grouped_into 'root' }
-  it { should be_linked_to '../sites-available/dvwa.conf' }
+  it { should be_linked_to '/etc/apache2/sites-available/dvwa.conf' }
 end
 
 describe service 'mariadb' do
