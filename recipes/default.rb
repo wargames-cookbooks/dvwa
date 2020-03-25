@@ -16,13 +16,19 @@
 # limitations under the License.
 #
 
+# PHP directives
+node.default['php']['directives']['allow_url_fopen'] = 'On'
+node.default['php']['directives']['allow_url_include'] = 'On'
+node.default['php']['directives']['display_errors'] = node['dvwa']['security_level'] == 'low' ? 'On' : 'Off'
+
+# PHP apache2 conf_dir
+node.override['php']['conf_dir'] = node['php']['conf_dir'].gsub(%r{/cli}, '/apache2')
+
 # Fix php attributes for Debian 10
 if platform?('debian') && node['platform_version'].to_i >= 10
   node.override['php']['packages'] = %w(php7.3-cgi php7.3 php7.3-dev php7.3-cli php-pear)
-  node.override['php']['conf_dir'] = '/etc/php/7.3/cli'
+  node.override['php']['conf_dir'] = '/etc/php/7.3/apache2'
 end
-
-include_recipe 'php'
 
 # Apache2 configuration
 apache2_install 'dvwa'
@@ -41,6 +47,9 @@ package value_for_platform(
             '<= 14.04' => 'libapache2-mod-php5',
           })
 
+include_recipe 'php'
+package 'php-gd'
+
 mod, modname, identifier = value_for_platform(
        default: ['php7', nil, nil],
        ubuntu: {
@@ -52,12 +61,6 @@ mod, modname, identifier = value_for_platform(
 apache2_module mod do
   mod_name modname unless modname.nil?
   identifier identifier unless identifier.nil?
-end
-
-directory 'dvwa-docroot' do
-  extend Apache2::Cookbook::Helpers
-  path "#{default_docroot_dir}/dvwa"
-  recursive true
 end
 
 template 'dvwa-site' do
@@ -85,24 +88,34 @@ remote_file "#{Chef::Config[:file_cache_path]}/dvwa.tar.gz" do
 end
 
 directory node['dvwa']['path'] do
+  extend Apache2::Cookbook::Helpers
   recursive true
+  owner default_apache_user
+  group default_apache_group
 end
 
 execute 'untar-dvwa' do
+  extend Apache2::Cookbook::Helpers
   cwd node['dvwa']['path']
   command "tar --strip-components 1 -xzf #{Chef::Config[:file_cache_path]}/dvwa.tar.gz"
+  user default_apache_user
+  group default_apache_group
 end
 
 template "#{node['dvwa']['path']}/config/config.inc.php" do
+  extend Apache2::Cookbook::Helpers
   source 'config.inc.php.erb'
+  owner default_apache_user
+  group default_apache_group
   variables db: node['dvwa']['db'],
             recaptcha: node['dvwa']['recaptcha'],
             security_level: node['dvwa']['security_level']
 end
 
 directory "#{node['dvwa']['path']}/external/phpids/0.6/lib/IDS/tmp" do
-  owner 'www-data'
-  group 'www-data'
+  extend Apache2::Cookbook::Helpers
+  owner default_apache_user
+  group default_apache_group
   recursive true
 end
 

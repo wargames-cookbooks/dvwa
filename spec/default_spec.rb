@@ -18,10 +18,6 @@ describe 'dvwa::default' do
     end.converge(described_recipe)
   end
 
-  it 'should include php cookbook' do
-    expect(subject).to include_recipe('php')
-  end
-
   it 'should install apache2' do
     expect(subject).to install_apache2_install('dvwa')
   end
@@ -38,14 +34,16 @@ describe 'dvwa::default' do
     expect(subject).to install_package('libapache2-mod-php')
   end
 
-  it 'should enable apache2 php module' do
-    expect(subject).to enable_apache2_module('php7')
+  it 'should include php cookbook' do
+    expect(subject).to include_recipe('php')
   end
 
-  it 'should create dvwa directory' do
-    expect(subject).to create_directory('dvwa-docroot')
-      .with(path: '/var/www/html/dvwa',
-            recursive: true)
+  it 'should install php-gd package' do
+    expect(subject).to install_package('php-gd')
+  end
+
+  it 'should enable apache2 php module' do
+    expect(subject).to enable_apache2_module('php7')
   end
 
   it 'should create apache2 site for dvwa' do
@@ -76,12 +74,16 @@ describe 'dvwa::default' do
 
   it 'should create directory for dvwa application' do
     expect(subject).to create_directory('/opt/dvwa-app')
-      .with(recursive: true)
+      .with(recursive: true,
+            owner: 'www-data',
+            group: 'www-data')
   end
 
   it 'should untar dvwa archive in created directory' do
     expect(subject).to run_execute('untar-dvwa')
       .with(cwd: '/opt/dvwa-app',
+            user: 'www-data',
+            group: 'www-data',
             command: 'tar --strip-components 1 -xzf '\
                      '/var/chef/cache/dvwa.tar.gz')
   end
@@ -99,7 +101,9 @@ describe 'dvwa::default' do
                /^\$_DVWA\['default_security_level'\] = "low";$/]
 
     expect(subject).to create_template(config_file)
-      .with(source: 'config.inc.php.erb')
+      .with(source: 'config.inc.php.erb',
+            owner: 'www-data',
+            group: 'www-data')
 
     matches.each do |m|
       expect(subject).to render_file(config_file).with_content(m)
