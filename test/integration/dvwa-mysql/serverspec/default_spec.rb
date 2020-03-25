@@ -33,7 +33,7 @@ describe file '/etc/apache2/sites-enabled/dvwa.conf' do
   it { should be_linked_to '../sites-available/dvwa.conf' }
 end
 
-describe service 'mysql-default' do
+describe service 'mariadb' do
   it { should be_enabled }
   it { should be_running }
 end
@@ -43,5 +43,5 @@ describe port 3306 do
 end
 
 describe command 'wget -O - http://127.0.0.1' do
-  its(:stdout) { should match(/Damn Vulnerable Web App \(DVWA\) - Login/) }
+  its(:stdout) { should match(%r{<title>.*\(DVWA\).*</title>}) }
 end

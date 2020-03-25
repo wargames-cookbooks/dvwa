@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'chef', '~>12'
+gem 'chef'
 gem 'berkshelf'
 
 group :integration do

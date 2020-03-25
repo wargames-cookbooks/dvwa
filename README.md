@@ -7,15 +7,15 @@ Requirements
 ------------
 
 #### Platform
-- `Ubuntu 14.04`
+- `Ubuntu 16.04`
+- `Ubuntu 18.04`
+- `Debian 9`
+- `Debian 10`
 
 #### Cookbooks
 - `apache2` - https://supermarket.chef.io/cookbooks/apache2
 - `php` - https://supermarket.chef.io/cookbooks/php
-- `database` - https://supermarket.chef.io/cookbooks/database
-- `mysql` - https://supermarket.chef.io/cookbooks/mysql
-- `mysql2_chef_gem` - https://supermarket.chef.io/cookbooks/mysql2_chef_gem
-- `postgresql` - https://supermarket.chef.io/cookbooks/postgresql
+- `mariadb` - https://supermarket.chef.io/cookbooks/mariadb
 
 Attributes
 ----------
@@ -23,9 +23,7 @@ Attributes
 #### dvwa::default
 | Key                               | Type   |  Description                                                                 |
 | --------------------------------- | ------- | --------------------------------------------------------------------------- |
-| `[dvwa][db][use_pgsql]`           | Boolean | Use Postgresql instead MySQL (default: `false`)                             |
 | `[dvwa][db][server]`              | String  | Database server host (default: `localhost`)                                 |
-| `[dvwa][db][port]`                | Integer | Database port, only needed for postgresql dbms (default: `5432`)            |
 | `[dvwa][db][name]`                | String  | Database name (default: `dvwa`)                                             |
 | `[dvwa][db][username]`            | String  | Database user name (default: `dvwa`)                                        |
 | `[dvwa][db][password]`            | String  | Database user password (default: `dvwa`)                                    |
@@ -33,7 +31,7 @@ Attributes
 | `[dvwa][recaptcha][private_key]`  | String  | Recaptcha private key (default: `6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF`) |
 | `[dvwa][apache2][server_name]`    | String  | Apache2 server name (default: `dvwa`)                                       |
 | `[dvwa][apache2][server_aliases]` | Array   | Array of apache2 virtualhost aliases (default: `[dvwa]`)                    |
-| `[dvwa][version]`                 | String  | DVWA version to deploy (default: `v1.0.8`)                                  |
+| `[dvwa][version]`                 | String  | DVWA version to deploy (default: `master`)                                  |
 | `[dvwa][path]`                    | String  | Path where application will be deployed (default: `/opt/dvwa`)              |
 | `[dvwa][security_level]`          | String  | DVWA default security level (default: `high`)                               |
 
@@ -49,33 +47,6 @@ Just include `dvwa` in your node's `run_list`:
   "run_list": [
     "recipe[dvwa]"
   ]
-}
-```
-
-For PostgreSQL support, you need to include some extras recipes:
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[postgresql::apt_pgdg_postgresql]",
-    "recipe[postgresql::client]",
-    "recipe[dvwa::pg_omnibus]",
-    "recipe[dvwa::gem_pg]",
-    "recipe[postgresql::server]",
-    "recipe[dvwa]"
-  ],
-  "attributes": {
-    "postgresql": {
-      "password": {
-        "postgres": "postgres"
-      }
-    },
-    "dvwa": {
-      "db": {
-        "use_pgsql": true
-      }
-    }
-  }
 }
 ```
 

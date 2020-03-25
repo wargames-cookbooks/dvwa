@@ -6,7 +6,7 @@
 
 # Database management system to use
 
-$DBMS = '<%= @db["use_pgsql"] ? "PGSQL" : "MySQL" %>';
+$DBMS = 'MySQL';
 
 # Database variables
 # WARNING: The database specified under db_database WILL BE ENTIRELY DELETED during setup.
@@ -17,9 +17,7 @@ $_DVWA['db_server'] = '<%= @db["server"] %>';
 $_DVWA['db_database'] = '<%= @db["name"] %>';
 $_DVWA['db_user'] = '<%= @db["username"] %>';
 $_DVWA['db_password'] = '<%= @db["password"] %>';
-
-# Only needed for PGSQL
-$_DVWA['db_port'] = '<%= @db["port"] %>';
+$_DVWA['db_port'] = '3306';
 
 # ReCAPTCHA Settings
 # Get your keys at https://www.google.com/recaptcha/admin/create

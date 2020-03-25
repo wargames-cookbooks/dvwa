@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-default['dvwa']['version'] = 'v1.0.8'
+default['dvwa']['version'] = 'master'
 default['dvwa']['path'] = '/opt/dvwa'
 default['dvwa']['security_level'] = 'high'
 
@@ -26,9 +26,7 @@ default['dvwa']['recaptcha']['private_key'] = '6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNeh
 default['dvwa']['apache2']['server_name'] = 'dvwa'
 default['dvwa']['apache2']['server_aliases'] = ['dvwa']
 
-default['dvwa']['db']['use_pgsql'] = false
 default['dvwa']['db']['server'] = 'localhost'
-default['dvwa']['db']['port'] = 5432
 default['dvwa']['db']['name'] = 'dvwa'
 default['dvwa']['db']['username'] = 'dvwa'
 default['dvwa']['db']['password'] = 'dvwa'

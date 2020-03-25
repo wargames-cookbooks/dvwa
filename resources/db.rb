@@ -19,113 +19,60 @@
 resource_name :dvwa_db
 default_action :create
 
-property :pgsql, [true, false], default: false
 property :server, String
-property :port, Integer
 property :username, String
 property :password, String
 property :dvwa_path, String
 
 action :create do
-  connection_info = { host: new_resource.server }
-  filename = new_resource.pgsql ? 'dvwa-pg.sql' : 'dvwa-my.sql'
-
   directory 'create-sql-dir' do
     path "#{new_resource.dvwa_path}/sql"
     mode '0700'
   end
 
-  cookbook_file "#{new_resource.dvwa_path}/sql/#{filename}" do
-    source filename
+  cookbook_file "#{new_resource.dvwa_path}/sql/dvwa-my.sql" do
+    source 'dvwa-my.sql'
   end
 
-  if new_resource.pgsql
-    provider = Chef::Provider::Database::Postgresql
-    connection_info[:port] = new_resource.port
-    connection_info[:username] = 'postgres'
-    connection_info[:password] = node['postgresql']['password']['postgres']
+  package value_for_platform(
+            default: 'php-mysql',
+            ubuntu: { '<= 14.04' => 'php5-mysqlnd' })
 
-    include_recipe 'php::module_pgsql'
+  mariadb_server_install 'MariaDB Server' do
+    setup_repo true
+    version '10.3'
+    password 'toor'
+  end
 
-    postgresql_database 'drop-dvwa-db' do
-      connection connection_info
-      database_name new_resource.name
-      action :drop
-    end
+  mariadb_server_configuration 'MariaDB Server Configuration' do
+    version '10.3'
+    mysqld_bind_address new_resource.server
+    mysqld_port 3306
+  end
 
-    postgresql_database_user new_resource.username do
-      connection connection_info
-      password new_resource.password
-    end
+  mariadb_database 'drop-dvwa-db' do
+    database_name new_resource.name
+    action :drop
+  end
 
-    postgresql_database 'create-dvwa-db' do
-      connection connection_info
-      template 'DEFAULT'
-      encoding 'DEFAULT'
-      tablespace 'DEFAULT'
-      connection_limit '-1'
-      database_name new_resource.name
-      owner new_resource.username
-    end
+  mariadb_database new_resource.name do
+    action :create
+    host new_resource.server
+  end
 
-    database "Setup database (#{provider})" do
-      connection connection_info
-      database_name new_resource.name
-      provider provider
-      sql { ::File.open("#{new_resource.dvwa_path}/sql/#{filename}").read }
-      action :query
-    end
-  else
-    filename = 'dvwa-my.sql'
-    provider = Chef::Provider::Database::Mysql
-    connection_info[:username] = 'root'
-    connection_info[:password] = 'toor'
-    connection_info[:socket] = '/run/mysql-default/mysqld.sock'
+  mariadb_user new_resource.username do
+    action [:create, :grant]
+    password new_resource.password
+    database_name new_resource.name
+    privileges [:all]
+    host '%'
+  end
 
-    mysql2_chef_gem 'default' do
-      package_version '5.5'
-    end
-
-    include_recipe 'php::module_mysql'
-
-    mysql_service 'default' do
-      port '3306'
-      version '5.5'
-      initial_root_password 'toor'
-      action [:create, :start]
-    end
-
-    mysql_database 'drop-dvwa-db' do
-      database_name new_resource.name
-      connection connection_info
-      action :drop
-    end
-
-    mysql_database_user new_resource.username do
-      connection connection_info
-      password new_resource.password
-      database_name new_resource.name
-      privileges [:select, :update, :insert, :create, :delete, :drop]
-      action :grant
-    end
-
-    mysql_database 'create-dvwa-db' do
-      connection connection_info
-      database_name new_resource.name
-      action :create
-    end
-
-    execute 'import-mysql-dump' do
-      command "mysql -h #{connection_info[:host]} "\
-              "-u #{connection_info[:username]} "\
-              "-p#{connection_info[:password]} "\
-              '--socket /run/mysql-default/mysqld.sock '\
-              "#{new_resource.name} < #{new_resource.dvwa_path}/sql/#{filename}"
-    end
-
-    link '/run/mysqld/mysqld.sock' do
-      link_type :symbolic
-      to '/run/mysql-default/mysqld.sock'
-    end
+  execute 'import-mysql-dump' do
+    command 'mysql -h 127.0.0.1 '\
+            "-u #{new_resource.username} "\
+            "-p#{new_resource.password} "\
+            '--socket /run/mysql-default/mysqld.sock '\
+            "#{new_resource.name} < #{new_resource.dvwa_path}/sql/dvwa-my.sql"
   end
 end

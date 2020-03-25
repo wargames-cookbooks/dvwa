@@ -16,23 +16,70 @@
 # limitations under the License.
 #
 
-include_recipe 'apache2'
+# Fix php attributes for Debian 10
+if platform?('debian') && node['platform_version'].to_i >= 10
+  node.override['php']['packages'] = %w(php7.3-cgi php7.3 php7.3-dev php7.3-cli php-pear)
+  node.override['php']['conf_dir'] = '/etc/php/7.3/cli'
+end
+
 include_recipe 'php'
-include_recipe 'apache2::mod_php'
 
 # Apache2 configuration
-apache_site 'default' do
-  enable false
+apache2_install 'dvwa'
+
+service 'apache2' do
+  extend Apache2::Cookbook::Helpers
+  service_name lazy { apache_platform_service_name }
+  supports restart: true, status: true, reload: true
+  action [:start, :enable]
 end
 
-web_app 'dvwa' do
-  cookbook 'dvwa'
-  enable true
-  docroot node['dvwa']['path']
-  server_name node['dvwa']['apache2']['server_name']
-  server_aliases node['dvwa']['apache2']['server_aliases']
+package value_for_platform(
+          default: 'libapache2-mod-php',
+          ubuntu: {
+            default: 'libapache2-mod-php',
+            '<= 14.04' => 'libapache2-mod-php5',
+          })
+
+mod, modname, identifier = value_for_platform(
+       default: ['php7', nil, nil],
+       ubuntu: {
+         default: %w(php7.0 libphp7.0.so php7_module),
+         '>= 18.04' => %w(php7.2 libphp7.2.so php7_module),
+         '<= 14.04' => %w(php5 libphp5.so php5_module),
+       })
+
+apache2_module mod do
+  mod_name modname unless modname.nil?
+  identifier identifier unless identifier.nil?
 end
 
+directory 'dvwa-docroot' do
+  extend Apache2::Cookbook::Helpers
+  path "#{default_docroot_dir}/dvwa"
+  recursive true
+end
+
+template 'dvwa-site' do
+  extend Apache2::Cookbook::Helpers
+  source 'site.conf.erb'
+  path "#{apache_dir}/sites-available/dvwa.conf"
+  variables(
+    server_name: node['dvwa']['apache2']['server_name'],
+    server_aliases: node['dvwa']['apache2']['server_aliases'],
+    document_root: node['dvwa']['path'],
+    log_dir: default_log_dir,
+    site_name: 'dvwa'
+  )
+end
+
+apache2_site 'dvwa'
+
+apache2_site '000-default' do
+  action :disable
+end
+
+# DVWA install
 dvwa_archive_url = 'https://github.com/RandomStorm/DVWA/archive/'
 dvwa_local = "#{Chef::Config[:file_cache_path]}/dvwa.tar.gz"
 
@@ -63,9 +110,7 @@ directory "#{node['dvwa']['path']}/external/phpids/0.6/lib/IDS/tmp" do
 end
 
 dvwa_db node['dvwa']['db']['name'] do
-  pgsql node['dvwa']['db']['use_pgsql']
   server node['dvwa']['db']['server']
-  port node['dvwa']['db']['port']
   username node['dvwa']['db']['username']
   password node['dvwa']['db']['password']
   dvwa_path node['dvwa']['path']

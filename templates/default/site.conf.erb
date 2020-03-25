@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+    ServerName <%= @server_name %>
+    ServerAlias <% @server_aliases.each do |a| %><%= a %> <% end %>
+    DocumentRoot <%= @document_root %>
+
+    <Directory <%= @document_root %>>
+        Options <%= [@directory_options || "FollowSymLinks" ].flatten.join " " %>
+        AllowOverride <%= [@allow_override || "None" ].flatten.join " " %>
+        Require all granted
+    </Directory>
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    LogLevel info
+    ErrorLog <%= @log_dir %>/<%= @site_name %>-error.log
+    CustomLog <%= @log_dir %>/<%= @site_name %>-access.log combined
+</VirtualHost>
