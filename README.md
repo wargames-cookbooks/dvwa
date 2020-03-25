@@ -21,19 +21,20 @@ Attributes
 ----------
 
 #### dvwa::default
-| Key                               | Type   |  Description                                                                 |
-| --------------------------------- | ------- | --------------------------------------------------------------------------- |
-| `[dvwa][db][server]`              | String  | Database server host (default: `localhost`)                                 |
-| `[dvwa][db][name]`                | String  | Database name (default: `dvwa`)                                             |
-| `[dvwa][db][username]`            | String  | Database user name (default: `dvwa`)                                        |
-| `[dvwa][db][password]`            | String  | Database user password (default: `dvwa`)                                    |
-| `[dvwa][recaptcha][public_key]`   | String  | Recaptcha public key (default: `6LfzKeUSAAAAABbGMjVS77HmkY7emIB9v5VGeEvb`)  |
-| `[dvwa][recaptcha][private_key]`  | String  | Recaptcha private key (default: `6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF`) |
-| `[dvwa][apache2][server_name]`    | String  | Apache2 server name (default: `dvwa`)                                       |
-| `[dvwa][apache2][server_aliases]` | Array   | Array of apache2 virtualhost aliases (default: `[dvwa]`)                    |
-| `[dvwa][version]`                 | String  | DVWA version to deploy (default: `master`)                                  |
-| `[dvwa][path]`                    | String  | Path where application will be deployed (default: `/opt/dvwa`)              |
-| `[dvwa][security_level]`          | String  | DVWA default security level (default: `high`)                               |
+| Key                               | Type    | Description                                                                              |
+| --------------------------------- | ------- | ---------------------------------------------------------------------------              |
+| `[dvwa][db][server]`              | String  | Database server host (default: `localhost`)                                              |
+| `[dvwa][db][name]`                | String  | Database name (default: `dvwa`)                                                          |
+| `[dvwa][db][username]`            | String  | Database user name (default: `dvwa`)                                                     |
+| `[dvwa][db][password]`            | String  | Database user password (default: `dvwa`)                                                 |
+| `[dvwa][recaptcha][public_key]`   | String  | Recaptcha public key (default: `6LfzKeUSAAAAABbGMjVS77HmkY7emIB9v5VGeEvb`)               |
+| `[dvwa][recaptcha][private_key]`  | String  | Recaptcha private key (default: `6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF`)              |
+| `[dvwa][apache2][server_name]`    | String  | Apache2 server name (default: `dvwa`)                                                    |
+| `[dvwa][apache2][server_aliases]` | Array   | Array of apache2 virtualhost aliases (default: `[dvwa]`)                                 |
+| `[dvwa][version]`                 | String  | DVWA version to deploy (default: `master`)                                               |
+| `[dvwa][archive_url]`             | String  | Archive URL to download DVWA (default: `https://github.com/ethicalhack3r/DVWA/archive/`) |
+| `[dvwa][path]`                    | String  | Path where application will be deployed (default: `/opt/dvwa`)                           |
+| `[dvwa][security_level]`          | String  | DVWA default security level (default: `high`)                                            |
 
 Usage
 -----
