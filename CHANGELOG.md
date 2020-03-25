@@ -2,6 +2,21 @@
 
 This file is used to list changes made in each version of dvwa.
 
+## 0.4.0:
+
+* Update default DVWA version to master (no recent release)
+* Remove PostgreSQL support, this DBMS is not fully supported by DVWA
+* Remove postgresql cookbook dependency (no longer supported)
+* Remove database cookbook dependency (deprecated)
+* Remove mysql cookbook dependency (replaced by mariadb)
+* Remove mysql2_chef_gem cookbook dependency
+* Add mariadb cookbook dependency
+* Remove support for Ubuntu 14.04 (cannot authenticate mariadb/mysql packages)
+* Add support for Ubuntu 16.04 & 18.04
+* Add support for Debian 9 & 10
+* Update for latest php & apache2 cookbooks
+* Fix CI
+
 ## 0.3.0:
 
 * Chef 13 compatibility
