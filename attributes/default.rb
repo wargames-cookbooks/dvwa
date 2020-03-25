@@ -19,6 +19,7 @@
 default['dvwa']['version'] = 'master'
 default['dvwa']['path'] = '/opt/dvwa'
 default['dvwa']['security_level'] = 'high'
+default['dvwa']['archive_url'] = 'https://github.com/ethicalhack3r/DVWA/archive/'
 
 default['dvwa']['recaptcha']['public_key'] = '6LfzKeUSAAAAABbGMjVS77HmkY7emIB9v5VGeEvb'
 default['dvwa']['recaptcha']['private_key'] = '6LfzKeUSAAAAAEPD91_3uUGaemNs9ZNehkccBOoF'

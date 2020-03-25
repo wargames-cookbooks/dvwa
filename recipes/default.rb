@@ -80,11 +80,8 @@ apache2_site '000-default' do
 end
 
 # DVWA install
-dvwa_archive_url = 'https://github.com/RandomStorm/DVWA/archive/'
-dvwa_local = "#{Chef::Config[:file_cache_path]}/dvwa.tar.gz"
-
-remote_file dvwa_local do
-  source "#{dvwa_archive_url}#{node['dvwa']['version']}.tar.gz"
+remote_file "#{Chef::Config[:file_cache_path]}/dvwa.tar.gz" do
+  source "#{node['dvwa']['archive_url']}#{node['dvwa']['version']}.tar.gz"
 end
 
 directory node['dvwa']['path'] do
@@ -93,7 +90,7 @@ end
 
 execute 'untar-dvwa' do
   cwd node['dvwa']['path']
-  command "tar --strip-components 1 -xzf #{dvwa_local}"
+  command "tar --strip-components 1 -xzf #{Chef::Config[:file_cache_path]}/dvwa.tar.gz"
 end
 
 template "#{node['dvwa']['path']}/config/config.inc.php" do
